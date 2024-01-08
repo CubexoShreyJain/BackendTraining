@@ -9,5 +9,7 @@ def testsquare():
    num = 7
    assert 7*7 == 40 #assert returns true if expression matches, else return exception
 
+
+
 def tesequality():
    assert 10 == 11
