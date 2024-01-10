@@ -14,6 +14,7 @@ class TestSum(unittest.TestCase):
     def test_supply(self):
         l = [5,5,5,5]
         self.assertEqual(mySumFunc(*l), 20)
+        
     def test_boolT(self):
         self.assertTrue("Shrey".isalpha())
     def test_boolF(self): 
