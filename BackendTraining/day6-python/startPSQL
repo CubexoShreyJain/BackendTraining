@@ -1,0 +1,5 @@
+systemctl start postgresql.service -- Starts the service
+sudo -u postgres -i                -- switch user from root to postgres that have prevelegis
+psql <dbname>                      -- To enter a database
+
+<!-- sudo -i -u postgres psql --> -- Directly enter root database

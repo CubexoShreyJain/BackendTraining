@@ -1,0 +1,1095 @@
+Atlas atlas-erdos8-shard-0 [primary] test> show dbs
+admin  264.00 KiB
+local    8.75 GiB
+Atlas atlas-erdos8-shard-0 [primary] test> db
+test
+Atlas atlas-erdos8-shard-0 [primary] test> use admin
+switched to db admin
+Atlas atlas-erdos8-shard-0 [primary] admin> use first_test
+switched to db first_test
+Atlas atlas-erdos8-shard-0 [primary] first_test> db
+first_test
+Atlas atlas-erdos8-shard-0 [primary] first_test> show db
+MongoshInvalidInputError: [COMMON-10001] 'db' is not a valid argument for "show".
+Atlas atlas-erdos8-shard-0 [primary] first_test> show dbs
+admin  264.00 KiB
+local    8.79 GiB
+Atlas atlas-erdos8-shard-0 [primary] first_test> db
+first_test
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.createcollection("posts")
+TypeError: db.createcollection is not a function
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.createCollection("posts")
+{ ok: 1 }
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.insertOne(object)
+ReferenceError: object is not defined
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.second.insertOne(object)
+ReferenceError: object is not defined
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.insertOne({
+... name: "Shrey Jain",
+... company: "Cubexo",
+... post: "SE Trainee".
+... post: "SE Trainee",
+Uncaught:
+SyntaxError: Unexpected token, expected "," (5:4)
+
+  3 | company: "Cubexo",
+  4 | post: "SE Trainee".
+> 5 | post: "SE Trainee",
+    |     ^
+  6 |
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.insertOne({ name: "Shrey Jain", company: "Cubexo", post: "SE Trainee", salary: 54000, performance: 99.99})
+{
+  acknowledged: true,
+  insertedId: ObjectId('659550f99debd02ae5cd6dc9')
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.insertMany([  
+...   {
+...     title: "Post Title 2",
+...     body: "Body of post.",
+...     category: "Event",
+...     likes: 2,
+...     tags: ["news", "events"],
+...     date: Date()
+...   },
+...   {
+...     title: "Post Title 3",
+...     body: "Body of post.",
+...     category: "Event",
+...     likes: 2,
+...     tags: ["news", "events"],
+...     date: Date()
+...   },
+...   {
+...     title: "Post Title 3",
+...     body: "Body of post.",
+...     category: "Technology",
+...     likes: 3,
+...     tags: ["news", "events"],
+...     date: Date()
+...   },
+...   {
+...     title: "Post Title 4",
+...     body: "Body of post.",
+...     category: "Event",
+...     likes: 4,
+...     tags: ["news", "events"],
+...     date: Date()
+...   }
+... ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('659551dc9debd02ae5cd6dca'),
+    '1': ObjectId('659551dc9debd02ae5cd6dcb'),
+    '2': ObjectId('659551dc9debd02ae5cd6dcc')
+  }
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.findOne()
+{
+  _id: ObjectId('659550f99debd02ae5cd6dc9'),
+  name: 'Shrey Jain',
+  company: 'Cubexo',
+  post: 'SE Trainee',
+  salary: 54000,
+  performance: 99.99
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({name: "Shrey Jain"})
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> dB.posts.find({name: "Shrey Jain"})
+ReferenceError: dB is not defined
+Atlas atlas-erdos8-shard-0 [primary] first_test> DB.posts.find({name: "Shrey Jain"})
+ReferenceError: DB is not defined
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({name: "ShreyJain"})
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({category: "Event"})
+[
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.insertOne({title: "test", tags: ["coder", "freelancer"]}
+... 
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId('6595538e9debd02ae5cd6dcd')
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find(
+... )
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({tags: "coder"})
+[
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({}, {title:1, category:1}
+... )
+[
+  { _id: ObjectId('659550f99debd02ae5cd6dc9') },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    category: 'Event'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    category: 'Technology'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    category: 'Event'
+  },
+  { _id: ObjectId('6595538e9debd02ae5cd6dcd'), title: 'test' }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({}, {likes:0, date:0 } )
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    tags: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    tags: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    tags: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({}, {likes:0, date:0, _id:0 } )
+[
+  {
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99
+  },
+  {
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    tags: [ 'news', 'events' ]
+  },
+  {
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    tags: [ 'news', 'events' ]
+  },
+  {
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    tags: [ 'news', 'events' ]
+  },
+  { title: 'test', tags: [ 'coder', 'freelancer' ] }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({}, {$set:{likes: 5}}
+... )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 5
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({}, { $set: { likes: 6 } } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Event"}, { $set: { likes: 6 } } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 6,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({category:"Event"})
+[
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 6,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Event"}, { $inc: { likes: 6 } } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find({category:"Event"})
+[
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 12,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}) 
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 12,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, upsert: true) 
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:93)
+
+> 1 | db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, upsert: true) 
+    |                                                                                              ^
+  2 |
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}, upsert: true}) 
+MongoServerError: Unknown modifier: upsert. Expected a valid update modifier or pipeline-style update specified as an array
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, upsert: true}) 
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:93)
+
+> 1 | db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, upsert: true}) 
+    |                                                                                              ^
+  2 |
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, $upsert: true}) 
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:94)
+
+> 1 | db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, $upsert: true}) 
+    |                                                                                               ^
+  2 |
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, {$upsert: true}) 
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 12,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, {$upsert: true}) 
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 12,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne( 
+...   { title: "Post Title 5" }, 
+...   {
+...     $set: 
+...       {
+...         title: "Post Title 5",
+...         body: "Body of post.",
+...         category: "Event",
+...         likes: 5,
+...         tags: ["news", "events"],
+...         date: Date()
+...       }
+...   }, 
+...   { upsert: true }
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId('65955920b20bdb24244cd9f1'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 12,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  },
+  {
+    _id: ObjectId('65955920b20bdb24244cd9f1'),
+    title: 'Post Title 5',
+    body: 'Body of post.',
+    category: 'Event',
+    date: 'Wed Jan 03 2024 18:24:56 GMT+0530 (India Standard Time)',
+    likes: 5,
+    tags: [ 'news', 'events' ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne( { title: "Post Title 5" }, { $set: { 
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateOne({category:"Dance"},{$set:{name: "Shrey test", class: "Top class"}}, {upsert: true})
+{
+  acknowledged: true,
+  insertedId: ObjectId('65955993b20bdb24244d318b'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 6
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 12,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ]
+  },
+  {
+    _id: ObjectId('65955920b20bdb24244cd9f1'),
+    title: 'Post Title 5',
+    body: 'Body of post.',
+    category: 'Event',
+    date: 'Wed Jan 03 2024 18:24:56 GMT+0530 (India Standard Time)',
+    likes: 5,
+    tags: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('65955993b20bdb24244d318b'),
+    category: 'Dance',
+    class: 'Top class',
+    name: 'Shrey test'
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.updateMany({}, {$inc:{likes: 2}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 7,
+  upsertedCount: 0
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+[
+  {
+    _id: ObjectId('659550f99debd02ae5cd6dc9'),
+    name: 'Shrey Jain',
+    company: 'Cubexo',
+    post: 'SE Trainee',
+    salary: 54000,
+    performance: 99.99,
+    likes: 8
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dca'),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 14,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcb'),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 5,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('659551dc9debd02ae5cd6dcc'),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 6,
+    tags: [ 'news', 'events' ],
+    date: 'Wed Jan 03 2024 17:53:56 GMT+0530 (India Standard Time)'
+  },
+  {
+    _id: ObjectId('6595538e9debd02ae5cd6dcd'),
+    title: 'test',
+    tags: [ 'coder', 'freelancer' ],
+    likes: 2
+  },
+  {
+    _id: ObjectId('65955920b20bdb24244cd9f1'),
+    title: 'Post Title 5',
+    body: 'Body of post.',
+    category: 'Event',
+    date: 'Wed Jan 03 2024 18:24:56 GMT+0530 (India Standard Time)',
+    likes: 7,
+    tags: [ 'news', 'events' ]
+  },
+  {
+    _id: ObjectId('65955993b20bdb24244d318b'),
+    category: 'Dance',
+    class: 'Top class',
+    name: 'Shrey test',
+    likes: 2
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.deleteMany(
+... )
+MongoshInvalidInputError: [COMMON-10001] Missing required argument at position 0 (Collection.deleteMany)
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.deleteMany({})
+{ acknowledged: true, deletedCount: 7 }
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find()
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.insertOne({test:234})
+{
+  acknowledged: true,
+  insertedId: ObjectId('65955a469debd02ae5cd6dce')
+}
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find(
+... )
+[ { _id: ObjectId('65955a469debd02ae5cd6dce'), test: 234 } ]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.deleteOne({test:"234"}
+... )
+{ acknowledged: true, deletedCount: 0 }
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find( )
+[ { _id: ObjectId('65955a469debd02ae5cd6dce'), test: 234 } ]
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.deleteOne({ test: 234 } )
+{ acknowledged: true, deletedCount: 1 }
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.posts.find( )
+
+Atlas atlas-erdos8-shard-0 [primary] first_test> db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5}, ]}}
+Atlas atlas-erdos8-shard-0 [primary] first_test> 
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+Atlas atlas-erdos8-shard-0 [primary] first_test> 
+^C
+my@shreyjain:~$ ^C
+my@shreyjain:~$ mongosh "mongodb+srv://cluster0.27ch92h.mongodb.net/" --apiVersion 1 --username ShreyJain
+Enter password: **********
+Current Mongosh Log ID:	659647525024328c7d96c4ce
+Connecting to:		mongodb+srv://<credentials>@cluster0.27ch92h.mongodb.net/?appName=mongosh+2.1.1
+Using MongoDB:		6.0.12 (API Version 1)
+Using Mongosh:		2.1.1
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5}, ]}}
+Atlas atlas-erdos8-shard-0 [primary] test> name: "laptop", rate: 10000, mrp: 20000, gst: 18.5},name: "laptop", rate: 10000, mrp: 20000, gst: 18.
+Atlas atlas-erdos8-shard-0 [primary] test> 
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+Atlas atlas-erdos8-shard-0 [primary] test> 
+my@shreyjain:~$ ^C
+my@shreyjain:~$ ^C
+my@shreyjain:~$ ^C
+my@shreyjain:~$ ^C
+my@shreyjain:~$ mongosh "mongodb+srv://cluster0.27ch92h.mongodb.net/" --apiVersion 1 --username ShreyJain
+Enter password: **********
+Current Mongosh Log ID:	659647a70dc0a93f0fa03b3f
+Connecting to:		mongodb+srv://<credentials>@cluster0.27ch92h.mongodb.net/?appName=mongosh+2.1.1
+Using MongoDB:		6.0.12 (API Version 1)
+Using Mongosh:		2.1.1
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+Atlas atlas-erdos8-shard-0 [primary] test> Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.i
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5}, ]}}
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:105)
+
+> 1 | db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5}, ]}}
+    |                                                                                                          ^
+  2 |
+
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5}, ]}}
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:105)
+
+> 1 | db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5}, ]}}
+    |                                                                                                          ^
+  2 |
+
+Atlas atlas-erdos8-shard-0 [primary] test> 
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5},{name: "bottle", rate: 10, mrp: 50, gst: 12} ]}}
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:149)
+
+> 1 | db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5},{name: "bottle", rate: 10, mrp: 50, gst: 12} ]}}
+    |                                                                                                                                                      ^
+  2 |
+
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.insertOne({id: "testUserID", data: [{name: "laptop", rate: 10000, mrp: 20000, gst: 18.5},{name: "bottle", rate: 10, mrp: 50, gst: 12} ]})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6596481a0dc0a93f0fa03b40')
+}
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.find()
+[
+  {
+    _id: ObjectId('6596481a0dc0a93f0fa03b40'),
+    id: 'testUserID',
+    data: [
+      { name: 'laptop', rate: 10000, mrp: 20000, gst: 18.5 },
+      { name: 'bottle', rate: 10, mrp: 50, gst: 12 }
+    ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.find({id: "testUserID2"})
+
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.find({id: "testUserID"})
+[
+  {
+    _id: ObjectId('6596481a0dc0a93f0fa03b40'),
+    id: 'testUserID',
+    data: [
+      { name: 'laptop', rate: 10000, mrp: 20000, gst: 18.5 },
+      { name: 'bottle', rate: 10, mrp: 50, gst: 12 }
+    ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.find({id: "testUserID"}, {data:1})
+[
+  {
+    _id: ObjectId('6596481a0dc0a93f0fa03b40'),
+    data: [
+      { name: 'laptop', rate: 10000, mrp: 20000, gst: 18.5 },
+      { name: 'bottle', rate: 10, mrp: 50, gst: 12 }
+    ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] test> db.inventory.find({id: "testUserID"}, {data:1, _id: 0})
+[
+  {
+    data: [
+      { name: 'laptop', rate: 10000, mrp: 20000, gst: 18.5 },
+      { name: 'bottle', rate: 10, mrp: 50, gst: 12 }
+    ]
+  }
+]
+Atlas atlas-erdos8-shard-0 [primary] test> 
